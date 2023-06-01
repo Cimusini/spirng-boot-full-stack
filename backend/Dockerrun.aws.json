@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "frasini-api",
-      "image": "cimu/frasini-api:latest",
+      "image": "cimu/frasini-api:01.06.2023.08.56.23",
       "essential": true,
       "memory": 512,
       "portMappings": [
