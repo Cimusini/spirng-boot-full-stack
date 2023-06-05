@@ -257,7 +257,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         });
     }
 
-  /*  @Test
+    @Test
     void updateCustomerEmail() {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
@@ -265,20 +265,20 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 email,
                 20,
-                FAKER.random().nextBoolean() ? MALE : FEMALE
-        );
+                MALE);
 
         underTest.insertCustomer(customer);
 
-        Integer id = underTest.selectAllCustomers()
+        int id = underTest.selectAllCustomers()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
                 .findFirst()
                 .orElseThrow();
 
-        String newEmail = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
-        // When
+        var newEmail = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();;
+
+        // When email is changed
         Customer update = new Customer();
         update.setId(id);
         update.setEmail(newEmail);
@@ -287,14 +287,14 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
 
         // Then
         Optional<Customer> actual = underTest.selectCustomerById(id);
+
         assertThat(actual).isPresent().hasValueSatisfying(c -> {
             assertThat(c.getId()).isEqualTo(id);
-            assertThat(c.getName()).isEqualTo(c.getName());
-            assertThat(c.getEmail()).isEqualTo(newEmail);
+            assertThat(c.getEmail()).isEqualTo(newEmail); // change
+            assertThat(c.getName()).isEqualTo(customer.getName());
             assertThat(c.getAge()).isEqualTo(customer.getAge());
-            assertThat(c.getGender()).isEqualTo(customer.getGender());
         });
-    }*/
+    }
 
     @Test
     void updateCustomerAge() {
