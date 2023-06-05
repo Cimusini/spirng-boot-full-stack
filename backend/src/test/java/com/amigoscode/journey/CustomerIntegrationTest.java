@@ -3,6 +3,7 @@ package com.amigoscode.journey;
 import com.amigoscode.customer.Customer;
 import com.amigoscode.customer.CustomerRegistrationRequest;
 import com.amigoscode.customer.CustomerUpdateRequest;
+import com.amigoscode.customer.Gender;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,9 @@ public class CustomerIntegrationTest {
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@gmail.com";
         int age = RANDOM.nextInt(1,100);
+        Gender gender = RANDOM.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-            name,email,age
+            name,email,age,gender
         );
 
         // send a post request
@@ -66,7 +68,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedCustomer = new Customer(
-                name,email,age
+                name,email,age,gender
         );
 
         // make sure that customer is present
@@ -101,8 +103,9 @@ public class CustomerIntegrationTest {
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@gmail.com";
         int age = RANDOM.nextInt(1,100);
+        Gender gender = RANDOM.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-                name,email,age
+                name,email,age,gender
         );
 
         // send a post request
@@ -129,7 +132,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedCustomer = new Customer(
-                name,email,age
+                name,email,age,gender
         );
 
         // make sure that customer is present
@@ -166,8 +169,9 @@ public class CustomerIntegrationTest {
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@gmail.com";
         int age = RANDOM.nextInt(1,100);
+        Gender gender = RANDOM.nextBoolean() ? Gender.MALE : Gender.FEMALE;
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-                name,email,age
+                name,email,age,gender
         );
 
         // send a post request
@@ -194,7 +198,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expectedCustomer = new Customer(
-                name,email,age
+                name,email,age,gender
         );
 
         // make sure that expeted is present
@@ -210,7 +214,7 @@ public class CustomerIntegrationTest {
         // update expeted by id
         String newName = new Faker().name().firstName();
         CustomerUpdateRequest updateRequest = new CustomerUpdateRequest(
-                newName, null,null
+                newName, null,null,gender
         );
 
         webTestClient.put()
@@ -233,7 +237,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expeted = new Customer(
-                id,newName,email,age
+                id,newName,email,age,gender
         );
 
         assertThat(updatedCustomer).isEqualTo(expeted);

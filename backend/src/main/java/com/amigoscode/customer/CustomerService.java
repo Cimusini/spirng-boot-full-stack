@@ -36,7 +36,8 @@ public class CustomerService {
                 new Customer(
                         customerRegistrationRequest.name(),
                         customerRegistrationRequest.email(),
-                        customerRegistrationRequest.age()
+                        customerRegistrationRequest.age(),
+                        customerRegistrationRequest.gender()
                 )
         );
     }
@@ -71,6 +72,11 @@ public class CustomerService {
                 throw new DuplicateResourceException("email already taken");
             }
             customer.setEmail(updateRequest.email());
+            changes = true;
+        }
+
+        if(updateRequest.gender() != null && !updateRequest.gender().equals(customer.getGender())){
+            customer.setGender(updateRequest.gender());
             changes = true;
         }
 
