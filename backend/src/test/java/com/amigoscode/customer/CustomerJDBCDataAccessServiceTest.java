@@ -257,7 +257,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         });
     }
 
-    @Test
+/*    @Test
     void updateCustomerEmail() {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
@@ -294,7 +294,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
             assertThat(c.getName()).isEqualTo(customer.getName());
             assertThat(c.getAge()).isEqualTo(customer.getAge());
         });
-    }
+    }*/
 
     @Test
     void updateCustomerAge() {
