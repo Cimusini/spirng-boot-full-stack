@@ -12,8 +12,9 @@ import {
 } from "@chakra-ui/react";
 import CreateCustomerForm from "./CreateCustomerForm.jsx";
 import {BsFillTrashFill, BsPersonFillAdd} from "react-icons/bs";
+import {AiFillCloseCircle} from "react-icons/ai";
 
-const DrawerForm = ({ fetchCustomers }) => {
+const CreateCustomerDrawer = ({ fetchCustomers }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return <>
         <Button
@@ -37,7 +38,7 @@ const DrawerForm = ({ fetchCustomers }) => {
 
                 <DrawerFooter>
                     <Button
-                        leftIcon={<BsFillTrashFill/>}
+                        leftIcon={<AiFillCloseCircle/>}
                         colorScheme={"teal"}
                         onClick={onClose}
                     >
@@ -49,4 +50,4 @@ const DrawerForm = ({ fetchCustomers }) => {
     </>
 }
 
-export default DrawerForm;
+export default CreateCustomerDrawer;
