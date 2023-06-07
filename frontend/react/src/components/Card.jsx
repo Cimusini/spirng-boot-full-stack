@@ -9,11 +9,25 @@ import {
     Stack,
     Tag,
     useColorModeValue,
+    Button,
+    useDisclosure,
+    AlertDialog,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody, AlertDialogFooter,
 } from '@chakra-ui/react';
+import React from "react";
+import {BsFillTrashFill} from "react-icons/bs";
+import {deleteCustomer, saveCustomer} from "../services/client.js";
+import {errorNotification, successNotification} from "../services/notification.js";
+import {isClass} from "eslint-plugin-react/lib/util/ast.js";
 
-export default function CardWithImage({id, name, email, age, gender, imageNumber}) {
+export default function CardWithImage({id, name, email, age, gender, imageNumber, fetchCustomers}) {
 
     const genderURL = gender === "MALE" ? "men" : "women";
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const cancelRef = React.useRef();
 
     return (
         <Center py={6}>
@@ -55,7 +69,76 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                         <Text color={'gray.500'}>Age {age} | {gender} </Text>
                     </Stack>
                 </Box>
+
+                <Stack m={8}>
+                        <Button
+                            mt={8}
+                            bg={"red.400"}
+                            color={"white"}
+                            rounded={"full"}
+                            _hover={{
+                                transform: 'translateY(-2px)',
+                                boxShadow: 'lg'
+                            }}
+                            _focus={{
+                                bg: "green.500"
+                            }}
+                            leftIcon={<BsFillTrashFill/>}
+                            onClick={onOpen}
+                        >
+                            Delete
+                        </Button>
+
+                    <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                    >
+                        <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                    Delete {name}
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody>
+                                    Are you sure you want delete {name}? You can't undo this action afterwards.
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button colorScheme='red' onClick={() => {
+                                        deleteCustomer(id)
+                                            .then(res => {
+                                                console.log(res);
+                                                successNotification(
+                                                    "Customer delete",
+                                                    `${name} was successfully delete`
+                                                );
+                                                fetchCustomers();
+                                            })
+                                            .catch(err => {
+                                                console.log(err)
+                                                errorNotification(
+                                                    err.code,
+                                                    err.response.data.message
+                                                )
+                                            })
+                                            .finally(() => {
+                                                onClose()
+                                            })
+                                    }} ml={3}>
+                                        Delete
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialogOverlay>
+                    </AlertDialog>
+                </Stack>
             </Box>
         </Center>
     );
+
 }
+
