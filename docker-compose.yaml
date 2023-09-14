@@ -25,6 +25,18 @@ services:
     depends_on:
       - db
     restart: unless-stopped
+  frasini-react:
+    container_name: frasini-react
+    image: cimu/frasini-react
+    build:
+      context: frontend/react
+      args:
+        api_base_url: http://localhost:8080
+    ports:
+      - "3000:5173"
+    depends_on:
+      - frasini-api
+    restart: unless-stopped
 
 networks:
   db:
