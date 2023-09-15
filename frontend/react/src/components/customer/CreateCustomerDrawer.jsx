@@ -7,11 +7,10 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
-    IconButton,
-    useDisclosure, Icon
+    useDisclosure
 } from "@chakra-ui/react";
-import CreateCustomerForm from "./CreateCustomerForm.jsx";
-import {BsFillTrashFill, BsPersonFillAdd} from "react-icons/bs";
+import CreateCustomerForm from "../shared/CreateCustomerForm.jsx";
+import {BsPersonFillAdd} from "react-icons/bs";
 import {AiFillCloseCircle} from "react-icons/ai";
 
 const CreateCustomerDrawer = ({ fetchCustomers }) => {
@@ -32,7 +31,7 @@ const CreateCustomerDrawer = ({ fetchCustomers }) => {
 
                 <DrawerBody>
                     <CreateCustomerForm
-                        fetchCustomers={fetchCustomers}
+                        onSuccess={ fetchCustomers}
                     />
                 </DrawerBody>
 
