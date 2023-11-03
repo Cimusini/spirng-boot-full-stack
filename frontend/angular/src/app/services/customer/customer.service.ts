@@ -5,6 +5,7 @@ import {CustomerDTO} from "../../models/customer-dto";
 import {AuthenticationResponse} from "../../models/authentication-response";
 import {environment} from "../../../environments/environment";
 import {CustomerRegistrationRequest} from "../../models/customer-registration-request";
+import {CustomerComponent} from "../../components/customer/customer.component";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,11 @@ export class CustomerService {
   }
 
   registerCustomer(customer : CustomerRegistrationRequest): Observable<void>{
-    return this.http.post<void >(this.customerUrl,customer);
+    return this.http.post<void>(this.customerUrl,customer);
+  }
+
+  deleteCustomer(id : number | undefined): Observable<void>{
+    return this.http.delete<void>(`${this.customerUrl}/${id}`);
   }
 }
 
