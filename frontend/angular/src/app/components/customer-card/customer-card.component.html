@@ -1,0 +1,39 @@
+<p-card [style]="{width: '316px'}" styleClass="p-card-shadow text-center">
+    <ng-template pTemplate="header">
+        <div>
+            <img
+                    class="border-round-top cover"
+                    height="120"
+                    alt="Card"
+                    src="https://static.vecteezy.com/system/resources/previews/003/623/626/non_2x/sunset-lake-landscape-illustration-free-vector.jpg"
+            >
+        </div>
+        <div class="flex justify-content-center" style="margin-top: -50px">
+            <img
+                class="customer-avatar"
+                [src]="customerImage"
+            >
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <p-badge
+            [value]="'' + (customerIndex + 1) "
+        ></p-badge>
+        <h2>{{ customer.name }}</h2>
+        <p class="text-gray-600">{{ customer.email }}</p>
+        <p class="text-gray-600">{{ customer.age }} | {{ customer.gender }}</p>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            label="Update"
+            class="p-button-secondary p-button-outlined p-button-rounded"
+        ></button>
+        <button
+                pButton
+                label="Delete"
+                class="p-button-danger p-button-outlined p-button-rounded ml-3"
+        ></button>
+    </ng-template>
+</p-card>
+
