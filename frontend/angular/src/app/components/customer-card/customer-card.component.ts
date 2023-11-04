@@ -13,13 +13,19 @@ export class CustomerCardComponent {
   customerIndex = 0;
   @Output()
   delete: EventEmitter<CustomerDTO> = new EventEmitter<CustomerDTO>();
+  @Output()
+  update: EventEmitter<CustomerDTO> = new EventEmitter<CustomerDTO>();
 
   get customerImage(): string {
     const gender = this.customer.gender === "MALE" ? "men" : "women";
-    return `https://randomuser.me/api/portraits/${gender}/${this.customerIndex}.jpg`;
+    return `https://randomuser.me/api/portraits/${gender}/${this.customer.id}.jpg`;
   }
 
   onDelete() {
     this.delete.emit(this.customer);
+  }
+
+  onUpdate() {
+    this.update.emit(this.customer);
   }
 }

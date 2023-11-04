@@ -5,7 +5,9 @@
 >
   <app-manage-customer
     [customer]="customer"
+    [operation]="operation"
     (submit)="save($event)"
+    (cancel)="cancel()"
   ></app-manage-customer>
 </p-sidebar>
 
@@ -23,7 +25,7 @@
         icon="pi pi-plus"
         label="Create customer"
         class="p-button-success"
-        (click)="display = true"
+        (click)="createCustomer()"
       ></button>
       <div class="flex justify-content-center align-items-center flex-wrap gap-5 mt-4">
         <app-customer-card
@@ -31,6 +33,7 @@
           [customer]="customer"
           [customerIndex]="index"
           (delete)="deleteCustomer($event)"
+          (update)="updateCustomer($event)"
         ></app-customer-card>
       </div>
     </div>

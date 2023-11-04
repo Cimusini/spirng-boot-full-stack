@@ -11,6 +11,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 })
 export class CustomerComponent implements OnInit {
   display = false;
+  operation: 'create' | 'update' = 'create';
   customers: Array<CustomerDTO> = [];
   customer: CustomerRegistrationRequest = {};
 
@@ -37,19 +38,35 @@ export class CustomerComponent implements OnInit {
 
   save(customer: CustomerRegistrationRequest) {
     if (customer) {
-      this.customerService.registerCustomer(customer)
-        .subscribe({
-          next: () => {
-            this.findAllCustomer();
-            this.display = false;
-            this.customer = {};
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Customer Saved!',
-              detail: `Customer ${customer.name} was successfully saved!`
-            });
-          }
-        });
+      if (this.operation === 'create') {
+        this.customerService.registerCustomer(customer)
+          .subscribe({
+            next: () => {
+              this.findAllCustomer();
+              this.display = false;
+              this.customer = {};
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Customer Saved!',
+                detail: `Customer ${customer.name} was successfully saved!`
+              });
+            }
+          });
+      } else if(this.operation === 'update') {
+         this.customerService.updateCustomer(customer.id,customer)
+           .subscribe({
+             next: () => {
+               this.findAllCustomer();
+               this.display = false;
+               this.customer = {};
+               this.messageService.add({
+                 severity: 'success',
+                 summary: 'Customer Updated!',
+                 detail: `Customer ${customer.name} was successfully updated!`
+               });
+             }
+           });
+      }
     }
   }
 
@@ -71,5 +88,24 @@ export class CustomerComponent implements OnInit {
           });
       }
     });
+  }
+
+  updateCustomer(customerDTO: CustomerDTO) {
+    this.display = true;
+    this.operation = 'update';
+    this.customer = customerDTO;
+
+  }
+
+  createCustomer() {
+    this.display = true;
+    this.operation = 'create';
+    this.customer = {};
+  }
+
+  cancel() {
+    this.display = false;
+    this.operation = 'create';
+    this.customer = {};
   }
 }
