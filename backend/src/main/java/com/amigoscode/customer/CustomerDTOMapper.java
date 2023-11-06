@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomerDTOMapper implements Function<Customer,CustomerDTO> {
+public class CustomerDTOMapper implements Function<Customer, CustomerDTO> {
 
     @Override
     public CustomerDTO apply(Customer customer) {
@@ -21,7 +21,8 @@ public class CustomerDTOMapper implements Function<Customer,CustomerDTO> {
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()),
-                customer.getUsername());
+                customer.getUsername(),
+                customer.getProfileImageId());
     }
 
 }

@@ -10,13 +10,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(TestConfig.class)
+@Import({TestConfig.class})
 class CustomerRepositoryTest extends AbstractTestcontainers {
 
     @Autowired
@@ -28,6 +29,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
+        System.out.println(applicationContext.getBeanDefinitionCount());
     }
 
     @Test
@@ -37,13 +39,14 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 email,
-                "password", 20,
-                Gender.MALE
-        );
+                "password",
+                20,
+                Gender.MALE);
+
         underTest.save(customer);
 
         // When
-        boolean actual = underTest.existsCustomerByEmail(email);
+        var actual = underTest.existsCustomerByEmail(email);
 
         // Then
         assertThat(actual).isTrue();
@@ -55,7 +58,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
 
         // When
-        boolean actual = underTest.existsCustomerByEmail(email);
+        var actual = underTest.existsCustomerByEmail(email);
 
         // Then
         assertThat(actual).isFalse();
@@ -69,11 +72,11 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 email,
                 "password", 20,
-                Gender.MALE
-        );
+                Gender.MALE);
+
         underTest.save(customer);
 
-        Integer id = underTest.findAll()
+        int id = underTest.findAll()
                 .stream()
                 .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
@@ -81,7 +84,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
                 .orElseThrow();
 
         // When
-        boolean actual = underTest.existsCustomerById(id);
+        var actual = underTest.existsCustomerById(id);
 
         // Then
         assertThat(actual).isTrue();
@@ -90,12 +93,42 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
     @Test
     void existsCustomerByIdFailsWhenIdNotPresent() {
         // Given
-        Integer id = -1;
+        int id = -1;
 
         // When
-        boolean actual = underTest.existsCustomerById(id);
+        var actual = underTest.existsCustomerById(id);
 
         // Then
         assertThat(actual).isFalse();
+    }
+
+    @Test
+    void canUpdateProfileImageId() {
+        String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
+        Customer customer = new Customer(
+                FAKER.name().fullName(),
+                email,
+                "password",
+                20,
+                Gender.MALE
+        );
+
+        underTest.save(customer);
+
+        int id = underTest.findAll()
+                .stream()
+                .filter(c -> c.getEmail().equals(email))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+        String profileImageId = "22222";
+        underTest.updateProfileImageId(profileImageId,id);
+
+        Optional<Customer> customerOptional = underTest.findById(id);
+
+        assertThat(customerOptional)
+                .isPresent()
+                .hasValueSatisfying(c -> assertThat(c.getProfileImageId()).isEqualTo(profileImageId));
     }
 }

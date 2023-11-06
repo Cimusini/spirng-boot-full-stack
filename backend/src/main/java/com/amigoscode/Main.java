@@ -26,18 +26,22 @@ public class Main {
             PasswordEncoder passwordEncoder
     ) {
         return args -> {
-            Faker faker = new Faker();
-            Random random = new Random();
-            String firstName = faker.name().firstName();
-            String lastName = faker.name().lastName();
-            Customer customer = new Customer(
-                    firstName + " " + lastName,
-                    firstName.toLowerCase() + "." + lastName.toLowerCase() + "@example.com",
-                    passwordEncoder.encode(UUID.randomUUID().toString()),
-                    random.nextInt(16,99),
-                    Gender.MALE
-            );
-            customerRepository.save(customer);
+            createRandomCustomer(customerRepository, passwordEncoder);
         };
+    }
+
+    private static void createRandomCustomer(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+        Faker faker = new Faker();
+        Random random = new Random();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        Customer customer = new Customer(
+                firstName + " " + lastName,
+                firstName.toLowerCase() + "." + lastName.toLowerCase() + "@example.com",
+                passwordEncoder.encode(UUID.randomUUID().toString()),
+                random.nextInt(16,99),
+                Gender.MALE
+        );
+        customerRepository.save(customer);
     }
 }

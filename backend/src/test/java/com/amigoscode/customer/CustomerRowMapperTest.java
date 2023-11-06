@@ -21,13 +21,15 @@ class CustomerRowMapperTest {
         when(rs.getString("email")).thenReturn("alex@gmail.com");
         when(rs.getInt("age")).thenReturn(19);
         when(rs.getString("gender")).thenReturn("MALE");
+        when(rs.getString("password")).thenReturn("password");
+        when(rs.getString("profile_image_id")).thenReturn("22222");
 
         // When
         Customer actual = customerRowMapper.mapRow(rs, 1);
 
         // Then
         Customer expeted = new Customer(
-                1,"Alex","alex@gmail.com", "password", 19,Gender.MALE
+                1,"Alex","alex@gmail.com", "password", 19,Gender.MALE,"22222"
         );
 
         assertThat(actual).isEqualTo(expeted);
