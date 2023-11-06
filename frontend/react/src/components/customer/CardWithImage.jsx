@@ -20,11 +20,11 @@ import {
 } from '@chakra-ui/react';
 import React from "react";
 import {BsFillTrashFill} from "react-icons/bs";
-import {deleteCustomer} from "../../services/client.js";
+import {customerProfilePictureUrl, deleteCustomer} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
-export default function CardWithImage({id, name, email, age, gender, imageNumber, fetchCustomers}) {
+export default function CardWithImage({id, name, email, age, gender, fetchCustomers}) {
 
     const genderURL = gender === "MALE" ? "men" : "women";
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,9 +52,7 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                 <Flex justify={'center'} mt={-12}>
                     <Avatar
                         size={'xl'}
-                        src={
-                            `https://randomuser.me/api/portraits/${genderURL}/${imageNumber}.jpg`
-                        }
+                        src={customerProfilePictureUrl(id)}
                         alt={'Author'}
                         css={{
                             border: '2px solid white',
